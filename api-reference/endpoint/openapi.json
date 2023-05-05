@@ -1,0 +1,284 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Tractatus AI API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/deploy/gravity/{endpoint_id}": {
+      "post": {
+        "summary": "Initiate document processing to extract text and run inference to extract utility information.",
+        "operationId": "document_inference_deploy_gravity__endpoint_id__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Endpoint Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "endpoint_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Tractatus API Key",
+              "type": "string"
+            },
+            "name": "x-api-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentInferenceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentInferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deploy/gravity/{endpoint_id}/result/{request_id}": {
+      "get": {
+        "summary": "Get Document Inference Status and Result",
+        "operationId": "get_document_result_deploy_gravity__endpoint_id__result__request_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Endpoint Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "endpoint_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Request Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "request_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Tractatus API Key",
+              "type": "string"
+            },
+            "name": "x-api-key",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentResultQueryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Context": {
+        "title": "Context",
+        "required": [
+          "file_urls"
+        ],
+        "type": "object",
+        "properties": {
+          "file_urls": {
+            "title": "File Urls",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DocumentInferenceRequest": {
+        "title": "DocumentInferenceRequest",
+        "required": [
+          "inputs",
+          "context"
+        ],
+        "type": "object",
+        "properties": {
+          "inputs": {
+            "title": "Inputs",
+            "type": "object"
+          },
+          "context": {
+            "$ref": "#/components/schemas/Context"
+          }
+        }
+      },
+      "DocumentInferenceResponse": {
+        "title": "DocumentInferenceResponse",
+        "required": [
+          "id",
+          "created_at",
+          "status",
+          "document_set_id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "document_set_id": {
+            "title": "Document Set Id",
+            "type": "string"
+          }
+        }
+      },
+      "DocumentResultQueryResponse": {
+        "title": "DocumentResultQueryResponse",
+        "required": [
+          "id",
+          "created_at",
+          "status",
+          "document_set_id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "document_set_id": {
+            "title": "Document Set Id",
+            "type": "string"
+          },
+          "inference_id": {
+            "title": "Inference Id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "output": {
+            "title": "Output"
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
