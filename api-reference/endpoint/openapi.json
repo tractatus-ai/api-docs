@@ -14,6 +14,7 @@
             "required": true,
             "schema": {
               "title": "Endpoint Id",
+              "description": "Unique endpoint ID used to select a specific prompt template, model and configs used to extract information from the document during inference time.",
               "type": "string",
               "format": "uuid"
             },
@@ -24,6 +25,7 @@
             "required": true,
             "schema": {
               "title": "Tractatus API Key",
+              "description": "API Key used for authentication, provided by Tractatus AI",
               "type": "string"
             },
             "name": "x-api-key",
@@ -73,6 +75,7 @@
             "required": true,
             "schema": {
               "title": "Endpoint Id",
+              "description": "Unique endpoint ID used to select a specific prompt template, model and configs used to extract information from the document during inference time.",
               "type": "string",
               "format": "uuid"
             },
@@ -83,6 +86,7 @@
             "required": true,
             "schema": {
               "title": "Request Id",
+              "description": "Unique request ID that was returned in the original Start Inference request under the `id` property of the JSON response.",
               "type": "string",
               "format": "uuid"
             },
@@ -93,6 +97,7 @@
             "required": true,
             "schema": {
               "title": "Tractatus API Key",
+              "description": "API Key used for authentication, provided by Tractatus AI.",
               "type": "string"
             },
             "name": "x-api-key",
@@ -128,6 +133,7 @@
     "schemas": {
       "Context": {
         "title": "Context",
+        "description": "Container for any context (external data sources) on which the LLM will run the inference query.",
         "required": [
           "file_urls"
         ],
@@ -135,6 +141,7 @@
         "properties": {
           "file_urls": {
             "title": "File Urls",
+            "description": "List of file URLs that will be downloaded, processed (OCR) and indexed for inference.",
             "type": "array",
             "items": {
               "type": "string"
@@ -145,15 +152,10 @@
       "DocumentInferenceRequest": {
         "title": "DocumentInferenceRequest",
         "required": [
-          "inputs",
           "context"
         ],
         "type": "object",
         "properties": {
-          "inputs": {
-            "title": "Inputs",
-            "type": "object"
-          },
           "context": {
             "$ref": "#/components/schemas/Context"
           }
@@ -171,23 +173,28 @@
         "properties": {
           "id": {
             "title": "Id",
+            "description": "This is the request ID that must be passed into the Query Result API endpoint.",
             "type": "string",
             "format": "uuid"
           },
           "created_at": {
             "title": "Created At",
+            "description": "ISO Timestamp at which the Start Inference request was received.",
             "type": "string"
           },
           "status": {
             "title": "Status",
+            "description": "Status of the document processing/inference request. Options are: NOT_STARTED, IN_PROGRESS, PROCESSING_DOCUMENT, INFERENCE_IN_PROGRESS, COMPLETED, ERROR.",
             "type": "string"
           },
           "message": {
             "title": "Message",
+            "description": "Descriptive message provide more details into the current status or error condition.",
             "type": "string"
           },
           "document_set_id": {
             "title": "Document Set Id",
+            "description": "Unique ID that identifies the provided documents in the context. For reference only.",
             "type": "string"
           }
         }
@@ -204,32 +211,39 @@
         "properties": {
           "id": {
             "title": "Id",
+            "description": "Request ID that was passed in as a query parameter. For reference only.",
             "type": "string",
             "format": "uuid"
           },
           "created_at": {
             "title": "Created At",
+            "description": "ISO Timestamp at which the Start Inference request was received.",
             "type": "string"
           },
           "status": {
             "title": "Status",
+            "description": "Status of the document processing/inference request. Options are: NOT_STARTED, IN_PROGRESS, PROCESSING_DOCUMENT, INFERENCE_IN_PROGRESS, COMPLETED, ERROR.",
             "type": "string"
           },
           "message": {
             "title": "Message",
+            "description": "Descriptive message provide more details into the current status or error condition.",
             "type": "string"
           },
           "document_set_id": {
             "title": "Document Set Id",
+            "description": "Unique ID that identifies the provided documents in the context. For reference only.",
             "type": "string"
           },
           "inference_id": {
             "title": "Inference Id",
+            "description": "Unique ID for the inference that was executed. For reference only.",
             "type": "string",
             "format": "uuid"
           },
           "output": {
-            "title": "Output"
+            "title": "Output",
+            "description": "Final output that contains the information extracted from the input context document. The format is specific to the use case, but the default is JSON format."
           }
         }
       },
@@ -257,6 +271,7 @@
         "properties": {
           "loc": {
             "title": "Location",
+            "description": "Location in the request that specifies where the validation error occurred.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -271,10 +286,12 @@
           },
           "msg": {
             "title": "Message",
+            "description": "Description of the request validation error that occurred.",
             "type": "string"
           },
           "type": {
             "title": "Error Type",
+            "description": "Type of request validation error that occurred.",
             "type": "string"
           }
         }
