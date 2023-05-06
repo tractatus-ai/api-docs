@@ -5,21 +5,31 @@
     "version": "0.1.1"
   },
   "paths": {
-    "/deploy/gravity/{endpoint_id}": {
+    "/deploy/{org}/{endpoint_id}": {
       "post": {
         "summary": "Initiate document processing to extract text and run inference to extract utility information.",
         "operationId": "document_inference_deploy_gravity__endpoint_id__post",
         "parameters": [
           {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Organization",
+              "description": "Name of your organization. You can find your organization in the Tractatus AI web app under Settings.",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endpoint_id",
+            "in": "path",
             "required": true,
             "schema": {
               "title": "Endpoint Id",
               "description": "Unique endpoint ID used to select a specific prompt template, model and configs used to extract information from the document during inference time. You can generate your own `endpoint_id` in the Tractatus AI platform. Enterprise customers may have `endpoint_id` provided to them by Tractatus AI.",
               "type": "string",
               "format": "uuid"
-            },
-            "name": "endpoint_id",
-            "in": "path"
+            }
           },
           {
             "required": true,
@@ -66,32 +76,42 @@
         }
       }
     },
-    "/deploy/gravity/{endpoint_id}/result/{request_id}": {
+    "/deploy/{org}/{endpoint_id}/result/{request_id}": {
       "get": {
         "summary": "Get Document Inference Status and Result",
         "operationId": "get_document_result_deploy_gravity__endpoint_id__result__request_id__get",
         "parameters": [
           {
+            "name": "org",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "title": "Organization",
+              "description": "Name of your organization. You can find your organization in the Tractatus AI web app under Settings.",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endpoint_id",
+            "in": "path",
             "required": true,
             "schema": {
               "title": "Endpoint Id",
               "description": "Unique endpoint ID used to select a specific Deploy Endpoint. This ID should match the original `endpoint_id` provided in the Inference Start request.",
               "type": "string",
               "format": "uuid"
-            },
-            "name": "endpoint_id",
-            "in": "path"
+            }
           },
           {
+            "name": "request_id",
+            "in": "path",
             "required": true,
             "schema": {
               "title": "Request Id",
               "description": "Unique request ID that was returned in the original Start Inference request under the `id` property of the JSON response.",
               "type": "string",
               "format": "uuid"
-            },
-            "name": "request_id",
-            "in": "path"
+            }
           },
           {
             "required": true,
