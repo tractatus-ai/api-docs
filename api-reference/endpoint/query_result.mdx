@@ -5,3 +5,25 @@ description: "Poll the status and results for a document query that has already 
 openapi: "GET /deploy/gravity/{endpoint_id}/result/{request_id}"
 api: "GET /deploy/gravity/{endpoint_id}/result/{request_id}"
 ---
+
+<ResponseExample>
+
+```json Response
+{
+  "id": "0154f94f-254c-49b4-bf21-7a8f347e64df",
+  "created_at": "2023-05-05T19:21:59.152601+00:00",
+  "status": "COMPLETED",
+  "message": "Inference is finished. Your results are ready.",
+  "document_set_id": "f5ccb332-b2a3-4e00-8de2-118bda7a406b",
+  "inference_id": "e042dc80-877f-47ba-8f68-2de51b3fd983",
+  "output": [
+    {
+      "output1": "value1",
+      "output2": "value2"
+      "outputN": "valueN"
+    }
+  ]
+}
+```
+
+</ResponseExample>

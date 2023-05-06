@@ -5,3 +5,17 @@ description: "Initiate asynchronous document processing and inference."
 openapi: "POST /deploy/gravity/{endpoint_id}"
 api: "POST /deploy/gravity/{endpoint_id}"
 ---
+
+<ResponseExample>
+
+  ```json Response
+  {
+    "id": "91dadd86-fc45-452b-930b-cb8aa007421c",
+    "created_at": "2023-05-05T22:08:23.230876+00:00",
+    "status": "PROCESSING_DOCUMENT",
+    "message": "We've started processing your document. Please query the result endpoint for inference status and output.",
+    "document_set_id": "e7199e67-ae6c-41bf-a9bd-75b75d951d54"
+  }
+  ```
+
+</ResponseExample>
