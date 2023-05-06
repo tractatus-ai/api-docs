@@ -7,7 +7,6 @@ api: "POST /deploy/gravity/{endpoint_id}"
 ---
 
 <ResponseExample>
-
   ```json Response
   {
     "id": "91dadd86-fc45-452b-930b-cb8aa007421c",
@@ -18,4 +17,19 @@ api: "POST /deploy/gravity/{endpoint_id}"
   }
   ```
 
+  ``` json File Error
+  {
+    "detail": [
+      {
+        "loc": [
+          "body",
+          "context",
+          "file_urls"
+        ],
+        "msg": "field required",
+        "type": "value_error.missing"
+      }
+    ]
+  }
+  ```
 </ResponseExample>

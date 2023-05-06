@@ -26,4 +26,21 @@ api: "GET /deploy/gravity/{endpoint_id}/result/{request_id}"
 }
 ```
 
+
+  ```json Validation Error
+  {
+    "detail": [
+      {
+        "loc": [
+          "path",
+          "request_id"
+        ],
+        "msg": "value is not a valid uuid",
+        "type": "type_error.uuid"
+      }
+    ]
+  }
+  ```
+
+
 </ResponseExample>
