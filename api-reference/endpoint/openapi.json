@@ -14,7 +14,7 @@
             "required": true,
             "schema": {
               "title": "Endpoint Id",
-              "description": "Unique endpoint ID used to select a specific prompt template, model and configs used to extract information from the document during inference time.",
+              "description": "Unique endpoint ID used to select a specific prompt template, model and configs used to extract information from the document during inference time. You can generate your own `endpoint_id` in the Tractatus AI platform. Enterprise customers may have `endpoint_id` provided to them by Tractatus AI.",
               "type": "string",
               "format": "uuid"
             },
@@ -52,16 +52,6 @@
                 }
               }
             }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
           }
         }
       }
@@ -75,7 +65,7 @@
             "required": true,
             "schema": {
               "title": "Endpoint Id",
-              "description": "Unique endpoint ID used to select a specific prompt template, model and configs used to extract information from the document during inference time.",
+              "description": "Unique endpoint ID used to select a specific Deploy Endpoint. This ID should match the original `endpoint_id` provided in the Inference Start request.",
               "type": "string",
               "format": "uuid"
             },
@@ -271,7 +261,7 @@
         "properties": {
           "loc": {
             "title": "Location",
-            "description": "Location in the request that specifies where the validation error occurred.",
+            "description": "Location in the request where the validation error occurred, e.g. `body`, `header`, `path`.",
             "type": "array",
             "items": {
               "anyOf": [
@@ -286,12 +276,12 @@
           },
           "msg": {
             "title": "Message",
-            "description": "Description of the request validation error that occurred.",
+            "description": "Description of the validation error that occurred.",
             "type": "string"
           },
           "type": {
             "title": "Error Type",
-            "description": "Type of request validation error that occurred.",
+            "description": "Type of validation error that occurred, e.g. `type_error`, `value_error`, etc.",
             "type": "string"
           }
         }

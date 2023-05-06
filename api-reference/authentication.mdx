@@ -3,14 +3,14 @@ title: "API Authentication"
 description: "Authenticating your Tractatus AI API calls"
 ---
 
-All endpoints authenticate the user with a Tractatus API Key provided in the request header for every API call.
+All endpoints authenticate the user with a Tractatus API Key that must be present in the request header for every API call.
 
 ```bash
 'x-api-key': '<Tractatus API Key>'
 ```
 
-API Keys are granted on an individual basis for now. An API "owner" should be assigned and they should use their
-Tractatus API key for authentication. In the future, we may provide organization-level API keys.
+API Keys are granted on an individual basis. An API "owner" should be assigned and they should use their
+Tractatus API key for authentication.
 
 You can access your API key by logging on to the Tractatus AI web application at app.tractatus.ai. Click on the
 `Settings` gear icon at the bottom of the sidebar. Then click on `Billing & Usage` to view your API key. Press

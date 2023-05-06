@@ -11,6 +11,20 @@
     "light": "#4D9CFF",
     "dark": "#0050B4"
   },
+  "topbarLinks": [
+    {
+      "name": "Website",
+      "url": "www.tractatus.ai"
+    },
+    {
+      "name": "Web App",
+      "url": "app.tractatus.ai"
+    },
+    {
+      "name": "Contact Us",
+      "url": "www.tractatus.ai"
+    }
+  ],
   "navigation": [
     {
       "group": "API Reference",
@@ -22,6 +36,10 @@
     }
   ],
   "footerSocials": {
+    "website": "https://www.tractatus.ai",
     "linkedin": "https://www.linkedin.com/company/tractatus-ai"
+  },
+  "api": {
+    "baseUrl": "https://api.tractatus.ai"
   }
 }
