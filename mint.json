@@ -14,15 +14,15 @@
   "topbarLinks": [
     {
       "name": "Website",
-      "url": "www.tractatus.ai"
+      "url": "https://www.tractatus.ai"
     },
     {
       "name": "Web App",
-      "url": "app.tractatus.ai"
+      "url": "https://app.tractatus.ai"
     },
     {
       "name": "Contact Us",
-      "url": "www.tractatus.ai"
+      "url": "mailto:support@tractatus.ai"
     }
   ],
   "navigation": [

@@ -16,7 +16,7 @@
             "required": true,
             "schema": {
               "title": "Organization",
-              "description": "Name of your organization. You can find your organization in the Tractatus AI web app under Settings.",
+              "description": "Name of your organization. You can find your organization name in the Tractatus AI web app under Settings.",
               "type": "string"
             }
           },
@@ -87,7 +87,7 @@
             "required": true,
             "schema": {
               "title": "Organization",
-              "description": "Name of your organization. You can find your organization in the Tractatus AI web app under Settings.",
+              "description": "Name of your organization. You can find your name in the Tractatus AI web app under Settings.",
               "type": "string"
             }
           },
