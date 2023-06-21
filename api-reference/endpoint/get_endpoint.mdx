@@ -1,0 +1,55 @@
+---
+title: "Get Endpoint"
+sidebarTitle: "Get Endpoint"
+description: "Get the Deploy Endpoint information, including model, parameters, prompt template and documents"
+openapi: "GET /deploy/endpoint/{endpoint_id}"
+api: "GET /deploy/endpoint/{endpoint_id}"
+---
+
+<ResponseExample>
+
+```json Response
+{
+    "id": "ef19d983-74c5-430e-bced-62f8c76bff60",
+    "created_at": "2023-05-23T22:31:28.531745+00:00",
+    "modified_at": "2023-05-23T22:31:28.531745+00:00",
+    "name": "Story time",
+    "description": "Story generation about a character playing a sport.",
+    "domain": "text",
+    "task": null,
+    "model": {
+        "name": "GPT-3",
+        "variant": "Ada",
+        "publisher": "OpenAI",
+        "version": "text-ada-001",
+        "slug": "OPENAI_GPT3_ADA_001"
+    },
+    "config": {
+        "temperature": 1,
+        "max_tokens": 250
+    },
+    "prompt_template": "{{prompt}}",
+    "status": "INACTIVE",
+    "owner_id": "1e622138-f92c-4df7-b28c-967c325c0113",
+    "context_id": "10aea784-45ef-4cab-95a1-1e596e6ab53b"
+}
+```
+
+
+  ```json Validation Error
+  {
+    "detail": [
+      {
+        "loc": [
+          "path",
+          "request_id"
+        ],
+        "msg": "value is not a valid uuid",
+        "type": "type_error.uuid"
+      }
+    ]
+  }
+  ```
+
+
+</ResponseExample>

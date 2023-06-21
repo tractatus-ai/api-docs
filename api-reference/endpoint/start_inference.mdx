@@ -1,35 +1,19 @@
 ---
-title: "Start Document Inference (async)"
-sidebarTitle: "Start Inference"
-description: "Initiate asynchronous document processing and inference."
-openapi: "POST /deploy/{org}/{endpoint_id}"
-api: "POST /deploy/{org}/{endpoint_id}"
+title: "Start Asynchronous Inference"
+sidebarTitle: "Start Async Inference"
+description: "Initiate asynchronous inference, which may or may not include a document set as context."
+openapi: "POST /deploy/endpoint/{endpoint_id}"
+api: "POST /deploy/endpoint/{endpoint_id}"
 ---
 
 <ResponseExample>
   ```json Response
-  {
-    "id": "91dadd86-fc45-452b-930b-cb8aa007421c",
-    "created_at": "2023-05-05T22:08:23.230876+00:00",
-    "status": "PROCESSING_DOCUMENT",
-    "message": "We've started processing your document. Please query the result endpoint for inference status and output.",
-    "document_set_id": "e7199e67-ae6c-41bf-a9bd-75b75d951d54"
-  }
-  ```
-
-  ``` json File Error
-  {
-    "detail": [
-      {
-        "loc": [
-          "body",
-          "context",
-          "file_urls"
-        ],
-        "msg": "field required",
-        "type": "value_error.missing"
-      }
+{
+    "request_id": "30e66a7e-22c2-41fd-97fb-6db3e86b3ed1",
+    "type": "text",
+    "inference_ids": [
+        "a44084ab-30f3-43af-be0c-048ee8852697"
     ]
-  }
+}
   ```
 </ResponseExample>
