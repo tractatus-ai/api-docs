@@ -34,7 +34,7 @@
         "api-reference/endpoint/start_document_process",
         "api-reference/endpoint/query_document_process",
         "api-reference/endpoint/start_inference",
-        "api-reference/endpoint/query_inference_results",
+        "api-reference/endpoint/query_inference_results"
       ]
     }
   ],
