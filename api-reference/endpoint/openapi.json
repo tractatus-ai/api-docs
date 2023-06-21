@@ -5,60 +5,39 @@
     "version": "0.1.1"
   },
   "paths": {
-    "/deploy/{org}/{endpoint_id}": {
-      "post": {
-        "summary": "Initiate document processing to extract text and run inference to extract utility information.",
-        "operationId": "document_inference_deploy_gravity__endpoint_id__post",
+    "/deploy/endpoint/{endpoint_id}": {
+      "get": {
+        "summary": "Read Endpoint By ID",
+        "operationId": "read_endpoint_by_id_deploy_endpoint__endpoint_id__get",
         "parameters": [
           {
-            "name": "org",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "title": "Organization",
-              "description": "Name of your organization. You can find your organization name in the Tractatus AI web app under Settings.",
-              "type": "string"
-            }
-          },
-          {
-            "name": "endpoint_id",
-            "in": "path",
             "required": true,
             "schema": {
               "title": "Endpoint Id",
-              "description": "Unique endpoint ID used to select a specific prompt template, model and configs used to extract information from the document during inference time. You can generate your own `endpoint_id` in the Tractatus AI platform. Enterprise customers may have `endpoint_id` provided to them by Tractatus AI.",
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "name": "endpoint_id",
+            "in": "path"
           },
           {
             "required": true,
+            "in": "header",
             "schema": {
               "title": "Tractatus API Key",
               "description": "API Key used for authentication, provided by Tractatus AI",
               "type": "string"
             },
-            "name": "x-api-key",
-            "in": "header"
+            "name": "x-api-key"
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DocumentInferenceRequest"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
-          "202": {
+          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentInferenceResponse"
+                  "$ref": "#/components/schemas/DeployEndpoint"
                 }
               }
             }
@@ -72,25 +51,104 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Endpoint Not Found Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Start an asynchronous inference using information stored in the target endpoint.",
+        "operationId": "document_inference_deploy_endpoint__endpoint_id__post",
+        "parameters": [
+          {
+            "name": "endpoint_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "title": "Endpoint Id",
+              "description": "Unique endpoint ID used to select a specific prompt template, model, configs and pre-indexed document set used during inference time. You can generate your own `endpoint_id` in the Tractatus AI platform.",
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "required": true,
+            "in": "header",
+            "schema": {
+              "title": "Tractatus API Key",
+              "description": "API Key used for authentication, provided by Tractatus AI",
+              "type": "string"
+            },
+            "name": "x-api-key"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InferenceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncInferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Endpoint Inactive Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Endpoint Not Found Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpError"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/deploy/{org}/{endpoint_id}/result/{request_id}": {
+    "/deploy/endpoint/{endpoint_id}/result/{inference_id}": {
       "get": {
-        "summary": "Get Document Inference Status and Result",
-        "operationId": "get_document_result_deploy_gravity__endpoint_id__result__request_id__get",
+        "summary": "Get Inference Status and Result",
+        "operationId": "deploy_endpoint__endpoint_id__result__inference_id__get",
         "parameters": [
-          {
-            "name": "org",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "title": "Organization",
-              "description": "Name of your organization. You can find your name in the Tractatus AI web app under Settings.",
-              "type": "string"
-            }
-          },
           {
             "name": "endpoint_id",
             "in": "path",
@@ -103,21 +161,150 @@
             }
           },
           {
-            "name": "request_id",
+            "name": "inference_id",
             "in": "path",
             "required": true,
             "schema": {
-              "title": "Request Id",
-              "description": "Unique request ID that was returned in the original Start Inference request under the `id` property of the JSON response.",
+              "title": "Inference Id",
+              "description": "Unique inference ID that was returned in the original Start Inference request under the `id` property of the JSON response.",
               "type": "string",
               "format": "uuid"
             }
           },
           {
             "required": true,
+            "name": "x-api-key",
+            "in": "header",
             "schema": {
               "title": "Tractatus API Key",
               "description": "API Key used for authentication, provided by Tractatus AI.",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InferenceResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Endpoint or Inference ID Not Found Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deploy/document/process": {
+      "post": {
+        "summary": "Start Processing Documents",
+        "description": "Initiate document processing to extract text and run inference on the provided document set.",
+        "operationId": "deploy_document_process__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "X-Api-Key",
+              "type": "string"
+            },
+            "name": "x-api-key",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentProcessRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentProcessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Endpoint Inactive Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Endpoint Not Found Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deploy/document/{document_set_id}/status": {
+      "get": {
+        "summary": "Get Document Process Status",
+        "operationId": "get_document_process_status_deploy_document__document_set_id__status_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Document Set Id",
+              "type": "string",
+              "format": "uuid"
+            },
+            "name": "document_set_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "X-Api-Key",
               "type": "string"
             },
             "name": "x-api-key",
@@ -129,9 +316,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentResultQueryResponse"
-                }
+                "schema": {}
               }
             }
           },
@@ -151,17 +336,141 @@
   },
   "components": {
     "schemas": {
+      "InferenceRequest": {
+        "title": "Inference Request",
+        "type": "object",
+        "properties": {
+          "inputs": {
+            "$ref": "#/components/schemas/Inputs"
+          },
+          "context": {
+            "$ref": "#/components/schemas/Context"
+          }
+        }
+      },
+      "Inputs": {
+        "title": "Inputs",
+        "description": "Parametrized input variables that will populate the prompt template stored in the deployed endpoint.",
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
       "Context": {
         "title": "Context",
         "description": "Container for any context (external data sources) on which the LLM will run the inference query.",
+        "type": "object",
+        "properties": {
+          "document_set_id": {
+            "title": "Document Set ID",
+            "description": "Optional identifier that uniquely identifies a pre-processed and indexed document set. If this property is omitted, the default document_set_id used in the deployed endpoint will be used. If this property is provided, it will override the default endpoint ID stored in the deployed endpoint.",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "AsyncInferenceResponse": {
+        "title": "Async Inference Response",
         "required": [
-          "file_urls"
+          "request_id",
+          "type",
+          "inference_ids"
         ],
+        "type": "object",
+        "properties": {
+          "request_id": {
+            "title": "Request ID",
+            "description": "Request ID that uniquely identifies a specific request.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "title": "Type",
+            "description": "Type of inference output",
+            "type": "string",
+            "enum": [
+              "text",
+              "image"
+            ]
+          },
+          "inference_ids": {
+            "title": "Inference Id",
+            "description": "Unique ID for the inference that was executed. For reference only.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "InferenceResult": {
+        "title": "Inference Result",
+        "required": [
+          "request_id",
+          "inference_id",
+          "status",
+          "message",
+          "output_type",
+          "output_format",
+          "output",
+          "latency_ms"
+        ],
+        "type": "object",
+        "properties": {
+          "request_id": {
+            "title": "Request ID",
+            "description": "Request ID that uniquely identifies a specific request.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "inference_id": {
+            "title": "Inference Id",
+            "description": "Unique ID for the inference that was executed. For reference only.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "title": "Status",
+            "description": "Status of the document processing/inference request. Options are: NOT_STARTED, IN_PROGRESS, PROCESSING_DOCUMENT, INFERENCE_IN_PROGRESS, COMPLETED, ERROR.",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "description": "Descriptive message provide more details into the current status or error condition.",
+            "type": "string"
+          },
+          "output_type": {
+            "title": "Output Type",
+            "description": "Type of inference output",
+            "type": "string",
+            "enum": [
+              "text",
+              "image"
+            ]
+          },
+          "output_format": {
+            "title": "Output Format",
+            "description": "Format of inference output. If output_type is 'text', then type will be 'text. If output_type is 'image', then 'output_format' will be 'url'.",
+            "type": "string",
+            "enum": [
+              "text",
+              "url"
+            ]
+          },
+          "output": {
+            "title": "Output",
+            "description": "Final output that contains the information extracted from the input context document. The format is specific to the use case, but the default is JSON format.",
+            "type": "string"
+          }
+        }
+      },
+      "DocumentProcessRequest": {
+        "title": "Document Process Request",
         "type": "object",
         "properties": {
           "file_urls": {
             "title": "File Urls",
-            "description": "List of file URLs that will be downloaded, processed (OCR) and indexed for inference.",
             "type": "array",
             "items": {
               "type": "string"
@@ -169,25 +478,13 @@
           }
         }
       },
-      "DocumentInferenceRequest": {
-        "title": "DocumentInferenceRequest",
-        "required": [
-          "context"
-        ],
-        "type": "object",
-        "properties": {
-          "context": {
-            "$ref": "#/components/schemas/Context"
-          }
-        }
-      },
-      "DocumentInferenceResponse": {
-        "title": "DocumentInferenceResponse",
+      "DocumentProcessResponse": {
+        "title": "Document Process Response",
         "required": [
           "id",
           "created_at",
-          "status",
-          "document_set_id"
+          "modified_at",
+          "status"
         ],
         "type": "object",
         "properties": {
@@ -202,68 +499,102 @@
             "description": "ISO Timestamp at which the Start Inference request was received.",
             "type": "string"
           },
+          "modified_at": {
+            "title": "Modified At",
+            "description": "ISO Timestamp at which the document processing/inference status was last updated.",
+            "type": "string"
+          },
           "status": {
             "title": "Status",
             "description": "Status of the document processing/inference request. Options are: NOT_STARTED, IN_PROGRESS, PROCESSING_DOCUMENT, INFERENCE_IN_PROGRESS, COMPLETED, ERROR.",
             "type": "string"
-          },
-          "message": {
-            "title": "Message",
-            "description": "Descriptive message provide more details into the current status or error condition.",
-            "type": "string"
-          },
-          "document_set_id": {
-            "title": "Document Set Id",
-            "description": "Unique ID that identifies the provided documents in the context. For reference only.",
-            "type": "string"
           }
         }
       },
-      "DocumentResultQueryResponse": {
-        "title": "DocumentResultQueryResponse",
+      "DeployEndpoint": {
+        "title": "DeployEndpoint",
         "required": [
           "id",
           "created_at",
+          "modified_at",
+          "name",
+          "description",
+          "model",
+          "prompt_template",
           "status",
-          "document_set_id"
+          "owner_id"
         ],
         "type": "object",
         "properties": {
           "id": {
             "title": "Id",
-            "description": "Request ID that was passed in as a query parameter. For reference only.",
             "type": "string",
-            "format": "uuid"
+            "description": "Unique ID for each endpoint",
+            "format": "uuid",
+            "example": "294cf8bf-1cdb-4866-bef7-bb1f6a18c582"
           },
           "created_at": {
             "title": "Created At",
-            "description": "ISO Timestamp at which the Start Inference request was received.",
+            "type": "string",
+            "description": "ISO format date and UTC time at which the database entry was created.",
+            "example": "2023-01-18T07:37:39.153212+00:00"
+          },
+          "modified_at": {
+            "title": "Modified At",
+            "type": "string",
+            "description": "ISO format date and UTC time at which the database entry was modified in place.",
+            "example": "2023-01-18T07:37:39.153212+00:00"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "domain": {
+            "title": "Domain",
+            "type": "string"
+          },
+          "task": {
+            "title": "Task",
+            "type": "string"
+          },
+          "model": {
+            "title": "Model",
+            "type": "object"
+          },
+          "config": {
+            "title": "Config",
+            "type": "object",
+            "default": {}
+          },
+          "prompt_template": {
+            "title": "Prompt Template",
             "type": "string"
           },
           "status": {
             "title": "Status",
-            "description": "Status of the document processing/inference request. Options are: NOT_STARTED, IN_PROGRESS, PROCESSING_DOCUMENT, INFERENCE_IN_PROGRESS, COMPLETED, ERROR.",
             "type": "string"
           },
-          "message": {
-            "title": "Message",
-            "description": "Descriptive message provide more details into the current status or error condition.",
+          "owner_id": {
+            "title": "Owner Id",
             "type": "string"
           },
-          "document_set_id": {
-            "title": "Document Set Id",
-            "description": "Unique ID that identifies the provided documents in the context. For reference only.",
+          "context_id": {
+            "title": "Context Id",
             "type": "string"
-          },
-          "inference_id": {
-            "title": "Inference Id",
-            "description": "Unique ID for the inference that was executed. For reference only.",
-            "type": "string",
-            "format": "uuid"
-          },
-          "output": {
-            "title": "Output",
-            "description": "Final output that contains the information extracted from the input context document. The format is specific to the use case, but the default is JSON format."
+          }
+        }
+      },
+      "HttpError": {
+        "title": "HTTPError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "string"
           }
         }
       },
