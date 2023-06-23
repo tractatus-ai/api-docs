@@ -528,63 +528,88 @@
         "properties": {
           "id": {
             "title": "Id",
-            "type": "string",
             "description": "Unique ID for each endpoint",
+            "type": "string",
             "format": "uuid",
             "example": "294cf8bf-1cdb-4866-bef7-bb1f6a18c582"
           },
           "created_at": {
             "title": "Created At",
-            "type": "string",
             "description": "ISO format date and UTC time at which the database entry was created.",
+            "type": "string",
             "example": "2023-01-18T07:37:39.153212+00:00"
           },
           "modified_at": {
             "title": "Modified At",
-            "type": "string",
             "description": "ISO format date and UTC time at which the database entry was modified in place.",
+            "type": "string",
             "example": "2023-01-18T07:37:39.153212+00:00"
           },
           "name": {
             "title": "Name",
+            "description": "Human-readable endpoint name, must be unique per user.",
             "type": "string"
           },
           "description": {
             "title": "Description",
+            "description": "Description providing additional details about endpoint usage.",
             "type": "string"
           },
           "domain": {
             "title": "Domain",
-            "type": "string"
+            "description": "Format of endpoint output.",
+            "type": "string",
+            "enum": [
+              "text",
+              "image"
+            ]
           },
           "task": {
             "title": "Task",
-            "type": "string"
+            "description": "Use case for which this endpoint was created.",
+            "type": "string",
+            "enum": [
+              "Text Generation",
+              "Text Understanding",
+              "Image Generation"
+            ]
           },
           "model": {
             "title": "Model",
+            "description": "LLM model that will be used to perform inference for this endpoint",
             "type": "object"
           },
           "config": {
             "title": "Config",
+            "description": "Model configuration parameters that will provided to the target model during inference.",
             "type": "object",
             "default": {}
           },
           "prompt_template": {
             "title": "Prompt Template",
+            "description": "Parametrized prompt template that will be resolved using the input variables and input to the LLM for inference.",
             "type": "string"
           },
           "status": {
             "title": "Status",
-            "type": "string"
+            "description": "Current endpoint status. If endpoint is inactive, and calls will return a 403 Forbidden error.",
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
           },
           "owner_id": {
             "title": "Owner Id",
-            "type": "string"
+            "description": "Unique ID associated with the user who originally created the endpoint.",
+            "type": "string",
+            "format": "uuid"
           },
           "context_id": {
             "title": "Context Id",
-            "type": "string"
+            "description": "Optional ID associated with the document(s) that will be used as context to the LLM during inference.",
+            "type": "string",
+            "format": "uuid"
           }
         }
       },
