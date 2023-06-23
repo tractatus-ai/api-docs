@@ -21,14 +21,14 @@
             "in": "path"
           },
           {
-            "required": true,
+            "name": "x-api-key",
             "in": "header",
+            "required": true,
             "schema": {
               "title": "Tractatus API Key",
-              "description": "API Key used for authentication, provided by Tractatus AI",
+              "description": "Universal API Key used for authentication and to access all models, provided by Tractatus AI",
               "type": "string"
-            },
-            "name": "x-api-key"
+            }
           }
         ],
         "responses": {
@@ -80,14 +80,14 @@
             }
           },
           {
-            "required": true,
+            "name": "x-api-key",
             "in": "header",
+            "required": true,
             "schema": {
               "title": "Tractatus API Key",
-              "description": "API Key used for authentication, provided by Tractatus AI",
+              "description": "Universal API Key used for authentication and to access all models, provided by Tractatus AI",
               "type": "string"
-            },
-            "name": "x-api-key"
+            }
           }
         ],
         "requestBody": {
@@ -172,12 +172,12 @@
             }
           },
           {
-            "required": true,
             "name": "x-api-key",
             "in": "header",
+            "required": true,
             "schema": {
               "title": "Tractatus API Key",
-              "description": "API Key used for authentication, provided by Tractatus AI.",
+              "description": "Universal API Key used for authentication and to access all models, provided by Tractatus AI",
               "type": "string"
             }
           }
@@ -219,17 +219,18 @@
     "/deploy/document/process": {
       "post": {
         "summary": "Start Processing Documents",
-        "description": "Initiate document processing to extract text and run inference on the provided document set.",
+        "description": "Extract text from each document and index the document set for inference. If the document is a flat PDF or image, OCR will be performed. Excel files will have the first sheet extracted as a CSV file. If multiple files are provided, they will be indexed together as a single index.",
         "operationId": "deploy_document_process__post",
         "parameters": [
           {
+            "name": "x-api-key",
+            "in": "header",
             "required": true,
             "schema": {
-              "title": "X-Api-Key",
+              "title": "Tractatus API Key",
+              "description": "Universal API Key used for authentication and to access all models, provided by Tractatus AI",
               "type": "string"
-            },
-            "name": "x-api-key",
-            "in": "header"
+            }
           }
         ],
         "requestBody": {
@@ -302,13 +303,14 @@
             "in": "path"
           },
           {
-            "required": false,
-            "schema": {
-              "title": "X-Api-Key",
-              "type": "string"
-            },
             "name": "x-api-key",
-            "in": "header"
+            "in": "header",
+            "required": true,
+            "schema": {
+              "title": "Tractatus API Key",
+              "description": "Universal API Key used for authentication and to access all models, provided by Tractatus AI",
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -471,6 +473,7 @@
         "properties": {
           "file_urls": {
             "title": "File Urls",
+            "description": "List of publicly available file URLs that will be processed and indexed to be used as context for inference.",
             "type": "array",
             "items": {
               "type": "string"
@@ -490,24 +493,25 @@
         "properties": {
           "id": {
             "title": "Id",
-            "description": "This is the request ID that must be passed into the Query Result API endpoint.",
+            "description": "Unique Document Set ID associated with the processed and indexed document set.",
             "type": "string",
             "format": "uuid"
           },
           "created_at": {
             "title": "Created At",
-            "description": "ISO Timestamp at which the Start Inference request was received.",
+            "description": "ISO Timestamp at which the document processing request was received.",
             "type": "string"
           },
           "modified_at": {
             "title": "Modified At",
-            "description": "ISO Timestamp at which the document processing/inference status was last updated.",
+            "description": "ISO Timestamp at which the document processing status was last updated.",
             "type": "string"
           },
           "status": {
             "title": "Status",
-            "description": "Status of the document processing/inference request. Options are: NOT_STARTED, IN_PROGRESS, PROCESSING_DOCUMENT, INFERENCE_IN_PROGRESS, COMPLETED, ERROR.",
-            "type": "string"
+            "description": "Status of the document processing request.",
+            "type": "string",
+            "enum": ["NOT_STARTED", "TEXTRACT_IN_PROGRESS", "INDEXING_IN_PROGRESS", "COMPLETED", "ERROR"]
           }
         }
       },
@@ -577,7 +581,14 @@
           "model": {
             "title": "Model",
             "description": "LLM model that will be used to perform inference for this endpoint",
-            "type": "object"
+            "type": "object",
+            "properties": {
+              "slug": {
+                "title": "Model Slug",
+                "description": "Unique model identifier",
+                "type": "string"
+              }
+            }
           },
           "config": {
             "title": "Config",
