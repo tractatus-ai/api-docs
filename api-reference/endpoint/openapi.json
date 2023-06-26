@@ -289,18 +289,18 @@
     },
     "/deploy/document/{document_set_id}/status": {
       "get": {
-        "summary": "Get Document Process Status",
-        "operationId": "get_document_process_status_deploy_document__document_set_id__status_get",
+        "summary": "Get Document Processing Status",
+        "operationId": "deploy_document__document_set_id__status_get",
         "parameters": [
           {
+            "name": "document_set_id",
+            "in": "path",
             "required": true,
             "schema": {
               "title": "Document Set Id",
               "type": "string",
               "format": "uuid"
-            },
-            "name": "document_set_id",
-            "in": "path"
+            }
           },
           {
             "name": "x-api-key",
