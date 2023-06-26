@@ -101,7 +101,7 @@
           "required": true
         },
         "responses": {
-          "202": {
+          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -183,7 +183,7 @@
           }
         ],
         "responses": {
-          "202": {
+          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -244,7 +244,7 @@
           "required": true
         },
         "responses": {
-          "202": {
+          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -298,6 +298,7 @@
             "required": true,
             "schema": {
               "title": "Document Set Id",
+              "description": "Unique document set identifier for which the processing status will be returned.",
               "type": "string",
               "format": "uuid"
             }
@@ -314,11 +315,13 @@
           }
         ],
         "responses": {
-          "202": {
+          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentProcessResponse"
+                }
               }
             }
           },
@@ -382,7 +385,7 @@
         "properties": {
           "request_id": {
             "title": "Request ID",
-            "description": "Request ID that uniquely identifies a specific request.",
+            "description": "Unique ID that identifies a specific request, which may invoke multiple inferences.",
             "type": "string",
             "format": "uuid"
           },
@@ -397,7 +400,7 @@
           },
           "inference_ids": {
             "title": "Inference Id",
-            "description": "Unique ID for the inference that was executed. For reference only.",
+            "description": "Unique ID for the inference that was executed.",
             "type": "array",
             "items": {
               "type": "string",
@@ -412,30 +415,35 @@
           "request_id",
           "inference_id",
           "status",
-          "message",
           "output_type",
           "output_format",
-          "output",
-          "latency_ms"
         ],
         "type": "object",
         "properties": {
           "request_id": {
             "title": "Request ID",
-            "description": "Request ID that uniquely identifies a specific request.",
+            "description": "Unique ID that identifies the inference request, which may produce multiple inferences results.",
             "type": "string",
             "format": "uuid"
           },
           "inference_id": {
             "title": "Inference Id",
-            "description": "Unique ID for the inference that was executed. For reference only.",
+            "description": "Unique ID for the inference that was executed.",
             "type": "string",
             "format": "uuid"
           },
           "status": {
             "title": "Status",
-            "description": "Status of the document processing/inference request. Options are: NOT_STARTED, IN_PROGRESS, PROCESSING_DOCUMENT, INFERENCE_IN_PROGRESS, COMPLETED, ERROR.",
-            "type": "string"
+            "description": "Status of the document processing/inference request.",
+            "type": "string",
+            "enum": [
+              "NOT_STARTED",
+              "IN_PROGRESS",
+              "PROCESSING_DOCUMENT",
+              "INFERENCE_IN_PROGRESS",
+              "COMPLETED",
+              "ERROR"
+            ]
           },
           "message": {
             "title": "Message",
@@ -464,6 +472,11 @@
             "title": "Output",
             "description": "Final output that contains the information extracted from the input context document. The format is specific to the use case, but the default is JSON format.",
             "type": "string"
+          },
+          "latency_ms": {
+            "title": "Inference Latency (ms)",
+            "description": "Number of milliseconds elapsed since the start of the inference to the successful completion or error.",
+            "type": "integer"
           }
         }
       },
@@ -511,7 +524,13 @@
             "title": "Status",
             "description": "Status of the document processing request.",
             "type": "string",
-            "enum": ["NOT_STARTED", "TEXTRACT_IN_PROGRESS", "INDEXING_IN_PROGRESS", "COMPLETED", "ERROR"]
+            "enum": [
+              "NOT_STARTED",
+              "TEXTRACT_IN_PROGRESS",
+              "INDEXING_IN_PROGRESS",
+              "COMPLETED",
+              "ERROR"
+            ]
           }
         }
       },

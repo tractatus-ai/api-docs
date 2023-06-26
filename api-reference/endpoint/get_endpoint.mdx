@@ -32,20 +32,20 @@ api: "GET /deploy/endpoint/{endpoint_id}"
 ```
 
 
-  ```json Validation Error
+```json Validation Error
+{
+"detail": [
   {
-    "detail": [
-      {
-        "loc": [
-          "path",
-          "request_id"
-        ],
-        "msg": "value is not a valid uuid",
-        "type": "type_error.uuid"
-      }
-    ]
+    "loc": [
+      "path",
+      "request_id"
+    ],
+    "msg": "value is not a valid uuid",
+    "type": "type_error.uuid"
   }
-  ```
+]
+}
+```
 
 
 </ResponseExample>
