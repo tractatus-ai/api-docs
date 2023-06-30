@@ -416,7 +416,7 @@
           "inference_id",
           "status",
           "output_type",
-          "output_format",
+          "output_format"
         ],
         "type": "object",
         "properties": {
