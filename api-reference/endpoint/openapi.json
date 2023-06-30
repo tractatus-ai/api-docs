@@ -523,7 +523,6 @@
             "description": "Status of the document processing request.",
             "type": "string",
             "enum": [
-              "NOT_STARTED",
               "TEXTRACT_IN_PROGRESS",
               "INDEXING_IN_PROGRESS",
               "COMPLETED",
