@@ -437,8 +437,6 @@
             "description": "Status of the document processing/inference request.",
             "type": "string",
             "enum": [
-              "NOT_STARTED",
-              "IN_PROGRESS",
               "PROCESSING_DOCUMENT",
               "INFERENCE_IN_PROGRESS",
               "COMPLETED",
