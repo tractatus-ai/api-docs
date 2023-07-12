@@ -580,7 +580,7 @@
           },
           "index_config": {
             "title": "Index Config",
-            "description": "Index and retrieval configuration parameters that will be provided to the target model during inference and indexing. Supported properties: top_k (integer), ",
+            "description": "Optional index and retrieval configuration parameters that will be provided to the target model during inference and indexing. Supported properties:\ntop_k (int): Retrieval parameter that determines how many chunks to read from the indexed document. If k>1, the chunks will be synthesized using a tree summarization algorithm.\ncontext_window (int): The context window size of the language model (LLM). It represents the maximum number of tokens that can be used as input to the LLM.\nchunk_overlap_ratio (float): The overlap ratio between consecutive text chunks when splitting a long text into smaller chunks. It is expressed as a ratio of the chunk size.\nchunk_size_limit (int): The maximum size limit for each text chunk when splitting a long text. If not provided, there is no limit on the chunk size.",
             "type": "object",
             "properties": {
               "top_k": {
