@@ -1,0 +1,62 @@
+---
+title: "Create Endpoint"
+sidebarTitle: "Create Endpoint"
+description: "Create the Deploy Endpoint, including model, parameters, prompt template and documents"
+openapi: "POST /deploy/endpoint"
+api: "POST /deploy/endpoint"
+---
+
+<ResponseExample>
+
+```json Response
+{
+    "id": "ba55961a-2bcc-4a22-ab13-223f5d38b63e",
+    "created_at": "2023-07-07T08:07:43.087338+00:00",
+    "modified_at": "2023-07-07T08:07:43.087338+00:00",
+    "name": "Document Summarizer (GPT-4, top_k=3)",
+    "description": "Summarizes the provided document",
+    "domain": "Text",
+    "task": "Text-to-Text Generation",
+    "model": {
+        "name": "GPT-4",
+        "variant": "8K",
+        "publisher": "OpenAI",
+        "version": "gpt-4",
+        "slug": "OPENAI_GPT4"
+    },
+    "config": {
+        "temperature": 0,
+        "top_p": 1,
+        "frequency_penalty": 0,
+        "max_tokens": 2048,
+        "stop_sequence": "",
+        "presence_penalty": 0
+    },
+    "prompt_template": "The provided context is a {{doc_type}} from company {{company_name}}. Provide a 300 word summary of the provided context.",
+    "status": "ACTIVE",
+    "index_config": {
+        "top_k": 3
+    },
+    "owner_id": "92372c37-2603-4261-afff-c35bd10029b3",
+    "context_id": "48ddd0bf-a742-441e-97d3-c670d82f528e"
+}
+```
+
+
+```json Validation Error
+{
+"detail": [
+  {
+    "loc": [
+      "body",
+      "name"
+    ],
+    "msg": "field required",
+    "type": "type_error.missing"
+  }
+]
+}
+```
+
+
+</ResponseExample>

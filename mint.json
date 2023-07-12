@@ -31,6 +31,7 @@
       "pages": [
         "api-reference/authentication",
         "api-reference/endpoint/get_endpoint",
+        "api-reference/endpoint/create_endpoint",
         "api-reference/endpoint/start_document_process",
         "api-reference/endpoint/query_document_process",
         "api-reference/endpoint/start_inference",

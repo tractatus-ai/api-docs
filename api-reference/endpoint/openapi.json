@@ -5,6 +5,56 @@
     "version": "0.1.1"
   },
   "paths": {
+    "/deploy/endpoint": {
+      "post": {
+        "summary": "Create Endpoint",
+        "operationId": "create_endpoint_deploy_endpoint_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Endpoint"
+              }
+            }
+          },
+          "required": true
+        },
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "title": "Tractatus API Key",
+              "description": "Universal API Key used for authentication and to access all models, provided by Tractatus AI",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndpointResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/deploy/endpoint/{endpoint_id}": {
       "get": {
         "summary": "Read Endpoint By ID",
@@ -341,6 +391,229 @@
   },
   "components": {
     "schemas": {
+      "Endpoint": {
+        "title": "Endpoint",
+        "required": [
+          "name",
+          "description",
+          "model",
+          "prompt_template",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "description": "Human-readable endpoint name, must be unique per user."
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "description": "Endpoint description providing additional details about endpoint usage."
+          },
+          "domain": {
+            "title": "Domain",
+            "type": "string",
+            "enum": [
+              "Text",
+              "Image"
+            ],
+            "description": "Format of endpoint output. Not required for backend operations. Only used in frontend."
+          },
+          "task": {
+            "title": "Task",
+            "type": "string",
+            "enum": [
+              "Text Generation",
+              "Text Understanding",
+              "Image Generation"
+            ],
+            "description": "Use case for which this endpoint was created. Not required for backend operations. Only used in frontend."
+          },
+          "model": {
+            "title": "Model",
+            "type": "object",
+            "required": [
+              "slug"
+            ],
+            "description": "LLM model dictionary that will be used to perform inference for this endpoint."
+          },
+          "config": {
+            "title": "Config",
+            "description": "Model configuration parameters that will provided to the target model during inference.",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "default": {}
+          },
+          "prompt_template": {
+            "title": "Prompt Template",
+            "type": "string",
+            "description": "Parametrized prompt template that will be resolved using the input variables and input to the LLM for inference."
+          },
+          "status": {
+            "title": "Status",
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ],
+            "description": "Current endpoint status. If endpoint is inactive, and calls will return a 403 Forbidden error."
+          },
+          "index_config": {
+            "title": "Index Config",
+            "description": "Index configuration parameters that will provided to the target model during inference and indexing.",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "default": {}
+          },
+          "owner_id": {
+            "title": "Owner Id",
+            "type": "string",
+            "format": "uuid",
+            "default": "Unique ID associated with the user who originally created the endpoint."
+          },
+          "context_id": {
+            "title": "Context Id",
+            "type": "string",
+            "format": "uuid",
+            "description": "Optional ID associated with the document(s) that will be used as context to the LLM during inference."
+          }
+        }
+      },
+      "EndpointResponse": {
+        "title": "EndpointResponse",
+        "required": [
+          "id",
+          "created_at",
+          "modified_at",
+          "name",
+          "description",
+          "model",
+          "prompt_template",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string",
+            "description": "Unique UUID for each endpoint",
+            "format": "uuid",
+            "example": "294cf8bf-1cdb-4866-bef7-bb1f6a18c582"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string",
+            "description": "ISO format date and UTC time at which the database entry was created.",
+            "example": "2023-01-18T07:37:39.153212+00:00"
+          },
+          "modified_at": {
+            "title": "Modified At",
+            "type": "string",
+            "description": "ISO format date and UTC time at which the database entry was modified in place.",
+            "example": "2023-01-18T07:37:39.153212+00:00"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string",
+            "description": "Human-readable endpoint name, must be unique per user."
+          },
+          "description": {
+            "title": "Description",
+            "type": "string",
+            "description": "Endpoint description providing additional details about endpoint usage."
+          },
+          "domain": {
+            "title": "Domain",
+            "type": "string",
+            "enum": [
+              "Text",
+              "Image"
+            ],
+            "description": "Format of endpoint output. Not required for backend operations. Only used in frontend."
+          },
+          "task": {
+            "title": "Task",
+            "type": "string",
+            "enum": [
+              "Text Generation",
+              "Text Understanding",
+              "Image Generation"
+            ],
+            "description": "Use case for which this endpoint was created. Not required for backend operations. Only used in frontend."
+          },
+          "model": {
+            "title": "Model",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "LLM model dictionary that will be used to perform inference for this endpoint."
+          },
+          "config": {
+            "title": "Model Config",
+            "description": "Model configuration parameters that will provided to the target model during inference.",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "prompt_template": {
+            "title": "Prompt Template",
+            "type": "string",
+            "description": "Parametrized prompt template that will be resolved using the input variables and input to the LLM for inference."
+          },
+          "status": {
+            "title": "Status",
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "ERROR"
+            ],
+            "description": "Current endpoint status. If endpoint is inactive, and calls will return a 403 Forbidden error."
+          },
+          "index_config": {
+            "title": "Index Config",
+            "description": "Index and retrieval configuration parameters that will be provided to the target model during inference and indexing. Supported properties: top_k (integer), ",
+            "type": "object",
+            "properties": {
+              "top_k": {
+                "title": "Top k",
+                "type": "integer",
+                "description": "Top k nearest neighbors to retrieve from the index.",
+                "default": 3
+              }
+            }
+          },
+          "owner_id": {
+            "title": "Owner Id",
+            "type": "string",
+            "format": "uuid",
+            "default": "Unique ID associated with the user who originally created the endpoint."
+          },
+          "context_id": {
+            "title": "Context Id",
+            "type": "string",
+            "format": "uuid",
+            "description": "Optional ID associated with the document(s) that will be used as context to the LLM during inference."
+          }
+        }
+      },
+      "EndpointStatus": {
+        "title": "EndpointStatus",
+        "enum": [
+          "INACTIVE",
+          "ACTIVE",
+          "ERROR"
+        ],
+        "description": "An enumeration."
+      },
       "InferenceRequest": {
         "title": "Inference Request",
         "type": "object",
@@ -610,7 +883,8 @@
             "title": "Config",
             "description": "Model configuration parameters that will provided to the target model during inference.",
             "type": "object",
-            "default": {}
+            "default": {
+            }
           },
           "prompt_template": {
             "title": "Prompt Template",
